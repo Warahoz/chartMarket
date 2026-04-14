@@ -1,0 +1,180 @@
+    *,*::after,*::before{
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+.navibar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    background-color: #0d1117;
+    color: #a0a0a0;
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.dropdown a {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown a:hover {
+    color: #00f2ff;
+    cursor: pointer;
+}
+
+.dropdown a, 
+.direct-link {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown a:hover, .direct-link:hover {
+    color: #00f2ff;
+}
+
+.nav-links {
+    align-items: center;
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.sign-up {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(225, 225, 225, 0.1);
+    transition: 0.3s;
+}
+
+.sign-up:hover {
+    background: white;
+    color: black;
+}
+
+.glow-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+    width: 100%;
+    box-shadow: 0 0 8px #00f2ff;
+}
+
+body {
+    background-color: #0d1117;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard {
+    display: flex;
+    padding: 40px;
+    gap: 30px;
+    justify-content: center;
+}
+
+.snapshot, .command-center {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 25px;
+    width: 450px;
+}
+
+.section-title {
+    font-size: 12px;
+    color: #8b949e;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.price-card h1 { font-size: 3rem; margin: 10px 0; }
+
+#watchlist-list { list-style: none; margin-top: 20px; }
+
+.watchlist-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #30363d;
+}
+
+/* Style for the input and button */
+#symbol-input {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#add-btn {
+    background: #00f2ff;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hero-content {
+    text-align: center;
+    padding: 60px 20px;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: -1px; /* Makes it look modern/sleek */
+}
+
+.highlight {
+    color: #00f2ff; /* Solid color is cleaner than a gradient */
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.4); /* Subtle glow */
+}
+
+.hero-content p {
+    color: #8b949e; /* Dimmer grey so the title pops */
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.hero-stats {
+    font-size: 12px;
+    color: #00ff88;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}

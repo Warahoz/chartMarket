@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>chartMarket</title>
+</head>
+<body>
+    <div class="Container">
+        <nav class="navibar">
+
+            <div class="nav-logo">
+               <span class="Logo">CHARTMARKET</span> 
+            </div>
+
+            <div class="navbar-center">
+                <div class="dropdown">
+                  <span class="label">Watchlists</span>
+                  <a href="#">Tech Leaders</a>
+                </div>
+                <div class="dropdown">
+                  <span class="label">Watchlists</span>
+                  <a href="#">Blue Chips</a>
+                </div>
+                <div class="dropdown">
+                  <span class="label">Watchlists</span>
+                  <a href="#">Growth Stocks</a>
+                </div>
+                
+                 <ul class="nav-links">
+                   <li><a href="#Home" class="direct-link">Home</a></li>
+                   <li><a href="#Market" class="direct-link">Market Overview</a></li>
+                   <li><a href="#Portfolio" class="direct-link">Portfolio</a></li>
+                </ul>
+            </div>  
+
+            <div class="navbar-right">
+                <button class="sign-up"><strong>SIGN UP</strong></button>
+            </div>
+             
+        </nav>
+        <div class="glow-line"></div>
+            <div class="hero-section">
+    <div class="hero-content">
+        <h1>Welcome to <span class="highlight">ChartMarket</span></h1>
+        <p>Your one-stop destination for real-time stock market insights and analysis.</p>
+        <div class="hero-stats">
+            <span>● API Connected</span>
+        </div>
+    </div>
+</div>
+
+            <main class="dashboard">
+            
+            <section class="snapshot">
+                <h2 class="section-title">Live Market Sentiment</h2>
+                <div class="price-card">
+                    <h3 id="ticker-name">---</h3> <h1 id="live-price">$0.00</h1> <p id="price-change">0.00%</p> </div>
+            </section>
+
+            <section class="command-center">
+                <h2 class="section-title">Manage Watchlist</h2>
+                
+                <div class="input-group">
+                    <input type="text" id="symbol-input" placeholder="Enter Ticker (e.g. TSLA)">
+                    <button id="add-btn">Add Stock</button> </div>
+
+                <ul id="watchlist-list">
+                    </ul>
+            </section>
+
+        </main>
+    </div>
+<script src="main.js"></script>
+</body>
+</html>
