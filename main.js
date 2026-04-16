@@ -1,30 +1,19 @@
-/**
- * 1. CONFIGURATION
- * We store the API key here. 
- */
-const apiKey = "2fb9e7fa62c34689a85fe3c4321faefb"; 
+const apiKey = "efd29230e596434cb95c04fc612e6da2"; 
 
-/**
- * 2. GET OPERATION (Read & Display)
- * This function is now DYNAMIC. It takes a 'symbol' as an argument.
- */
+//  GET OPERATION (Read & Display) 
 async function getStockData(symbol) {
     try {
         console.log(`Fetching data for: ${symbol}`);
         
-        // Step A: The Request (URL is built inside the function using the parameter)
         const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiKey}`);
         
-        // Step B: Parsing the JSON
         const data = await response.json();
 
-        // Step C: Error Handling (If the API doesn't find the stock)
         if (data.status === "error") {
             alert("Stock not found! Please check the symbol (e.g., TSLA, BTC/USD).");
             return;
         }
 
-        // Step D: Update the Main Dashboard UI
         document.getElementById('ticker-name').innerText = data.symbol;
         document.getElementById('live-price').innerText = `$${parseFloat(data.close).toFixed(2)}`;
 
