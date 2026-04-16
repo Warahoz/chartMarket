@@ -1,63 +1,48 @@
 /**
  * 1. CONFIGURATION
+ * We store the API key here. 
  */
-const apiKey = "efd29230e596434cb95c04fc612e6da2"; 
-const symbol = "AAPL";
-const url = `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiKey}`;
+const apiKey = "2fb9e7fa62c34689a85fe3c4321faefb"; 
 
 /**
  * 2. GET OPERATION (Read & Display)
- * Fetches real-time data and updates the UI.
+ * This function is now DYNAMIC. It takes a 'symbol' as an argument.
  */
-async function getMarketSentiment() {
+async function getStockData(symbol) {
     try {
-        console.log(`Fetching data for ${symbol}...`);
+        console.log(`Fetching data for: ${symbol}`);
         
-        const response = await fetch(url);
+        // Step A: The Request (URL is built inside the function using the parameter)
+        const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiKey}`);
         
-        // Error handling for network/server issues
-        if (!response.ok) { 
-            throw new Error(`HTTP error! Status: ${response.status}`); 
-        }
-
+        // Step B: Parsing the JSON
         const data = await response.json();
 
-        // Error handling for API-specific issues (wrong symbol, etc.)
+        // Step C: Error Handling (If the API doesn't find the stock)
         if (data.status === "error") {
-            throw new Error(data.message);
+            alert("Stock not found! Please check the symbol (e.g., TSLA, BTC/USD).");
+            return;
         }
 
-        // Processing the Data
-        const change = parseFloat(data.percent_change);
-        let sentiment = "";
-
-        if (change > 1.0) {
-            sentiment = "🚀 BULLISH: High Confidence!";
-        } else if (change < -1.0) {
-            sentiment = "⚠️ BEARISH: Market Panic!";
-        } else {
-            sentiment = "😴 STABLE: Quiet Day.";
-        }
-
-        // --- DISPLAYING RESULTS TO USER (DOM Manipulation) ---
-        // Instead of just console.log, we update the actual website:
+        // Step D: Update the Main Dashboard UI
         document.getElementById('ticker-name').innerText = data.symbol;
         document.getElementById('live-price').innerText = `$${parseFloat(data.close).toFixed(2)}`;
-        
+
+        // Step E: Bullish/Bearish Logic (Color Coding)
+        const change = parseFloat(data.percent_change);
         const changeEl = document.getElementById('price-change');
-        changeEl.innerText = `${change > 0 ? '+' : ''}${change.toFixed(2)}% (${sentiment})`;
+        
+        changeEl.innerText = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
         changeEl.style.color = change > 0 ? "#00ff88" : "#ff4444";
 
-        console.log(`Updated UI for ${data.symbol} at ${new Date().toLocaleTimeString()}`);
-
     } catch (error) {
-        console.error("Oops! Something went wrong:", error.message);
+        console.error("Connection Error:", error);
     }
 }
 
 /**
- * 3. POST OPERATION (Create)
- * Adds a new stock symbol to the visible list.
+ * 3. POST & SEARCH TRIGGER
+ * This connects the "Add Stock" button to both the API and the Watchlist.
  */
 const addBtn = document.getElementById('add-btn');
 const input = document.getElementById('symbol-input');
@@ -65,50 +50,53 @@ const list = document.getElementById('watchlist-list');
 
 addBtn.addEventListener('click', () => {
     const value = input.value.toUpperCase().trim();
-    if (value === "") return;
+    
+    if (value !== "") {
+        // ACTION 1: Fetch the data to show in the big main box (GET)
+        getStockData(value);
 
-    // Create the HTML element (POSTing to the screen)
-    const li = document.createElement('li');
-    li.className = "watchlist-item";
-    li.innerHTML = `
-        <span class="stock-name">${value}</span>
-        <div class="actions">
-            <button class="patch-btn">Note</button>
-            <button class="delete-btn">X</button>
-        </div>
-    `;
-
-    list.appendChild(li); 
-    input.value = ""; // Resetting the input field
+        // ACTION 2: Create a new item in the list below (POST)
+        const li = document.createElement('li');
+        li.className = "watchlist-item";
+        li.innerHTML = `
+            <span class="stock-name">${value}</span>
+            <div class="item-actions">
+                <button class="patch-btn">Note</button>
+                <button class="delete-btn">X</button>
+            </div>
+        `;
+        
+        list.appendChild(li);
+        input.value = ""; // Clear input for the next search
+    }
 });
 
 /**
- * 4. PATCH & DELETE OPERATIONS (Update & Remove)
- * Uses Event Delegation to handle dynamic list items.
+ * 4. PATCH & DELETE (Update & Remove)
+ * Using Event Delegation to handle the buttons inside the list.
  */
 list.addEventListener('click', (event) => {
-    const parent = event.target.closest('.watchlist-item');
-    if (!parent) return;
+    const clickedElement = event.target;
+    const parentItem = clickedElement.closest('.watchlist-item');
 
-    // DELETE: Remove the item from the display
-    if (event.target.classList.contains('delete-btn')) {
-        parent.remove();
+    if (!parentItem) return;
+
+    // DELETE: Removes the item from the screen
+    if (clickedElement.classList.contains('delete-btn')) {
+        parentItem.remove();
     }
 
-    // PATCH: Partially update the item (add a status note)
-    if (event.target.classList.contains('patch-btn')) {
-        const nameSpan = parent.querySelector('.stock-name');
-        nameSpan.innerText += " (Watching)";
-        nameSpan.style.color = "#00f2ff";
-        event.target.disabled = true; // Prevents updating twice
+    // PATCH: Updates the text of the existing item
+    if (clickedElement.classList.contains('patch-btn')) {
+        const span = parentItem.querySelector('.stock-name');
+        span.innerText += " (Watching)";
+        span.style.color = "#00f2ff";
+        clickedElement.disabled = true; // Button can only be clicked once
     }
 });
 
 /**
- * 5. INITIALIZATION
+ * 5. INITIAL LOAD
+ * Show Apple (AAPL) by default when the page first opens.
  */
-getMarketSentiment(); // Run once on load
-setInterval(getMarketSentiment, 60000); // Auto-update every minute
-
-
-
+getStockData("AAPL");
