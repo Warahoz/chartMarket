@@ -3,29 +3,42 @@ const apiKey = "efd29230e596434cb95c04fc612e6da2";
 //  GET OPERATION (Read & Display) 
 async function getStockData(symbol) {
     try {
-        console.log(`Fetching data for: ${symbol}`);
-        
         const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiKey}`);
-        
         const data = await response.json();
 
         if (data.status === "error") {
-            alert("Stock not found! Please check the symbol (e.g., TSLA, BTC/USD).");
+            alert("Stock not found!");
             return;
         }
 
+        // --- RESTORED SENTIMENT LOGIC ---
+        const change = parseFloat(data.percent_change);
+        let sentiment = "";
+
+        if (change > 1.0) {
+            sentiment = "🚀 BULLISH: High Confidence!";
+        } else if (change < -1.0) {
+            sentiment = "⚠️ BEARISH: Market Panic!";
+        } else {
+            sentiment = "😴 STABLE: Quiet Day.";
+        }
+
+        // --- UPDATE UI ---
         document.getElementById('ticker-name').innerText = data.symbol;
         document.getElementById('live-price').innerText = `$${parseFloat(data.close).toFixed(2)}`;
-
-        // Step E: Bullish/Bearish Logic (Color Coding)
-        const change = parseFloat(data.percent_change);
-        const changeEl = document.getElementById('price-change');
         
-        changeEl.innerText = `${change > 0 ? '+' : ''}${change.toFixed(2)}%`;
+        const changeEl = document.getElementById('price-change');
+        // Displays the % and your sentiment text
+        changeEl.innerText = `${change > 0 ? '+' : ''}${change.toFixed(2)}% | ${sentiment}`;
         changeEl.style.color = change > 0 ? "#00ff88" : "#ff4444";
+        
+        // If it's stable, let's make it a neutral grey/white
+        if (change <= 1.0 && change >= -1.0) {
+            changeEl.style.color = "#ffffff";
+        }
 
     } catch (error) {
-        console.error("Connection Error:", error);
+        console.error("Fetch Error:", error);
     }
 }
 
